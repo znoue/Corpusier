@@ -12,8 +12,6 @@ function VariablesPicker({gVariables, getVariables}) {
   const [source, setSource] = useState(false);
   const [variables, setVariables] = useState(gVariables)
 
-  let fruit = '';
-
   // Équivalent à componentDidMount plus componentDidUpdate :
   useEffect(() => {
     // con.log("Variables : ", variables)

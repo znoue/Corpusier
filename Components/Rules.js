@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {View, Text, TouchableOpacity, FlatList} from 'react-native'
 import { Icon } from 'react-native-elements'
-import Corpusier from './Corpusier';
-
 
 function Rules({rules, removeRule}) {
   const [_rules, updateRules] = useState(rules);

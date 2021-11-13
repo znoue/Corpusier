@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {View, ScrollView, Text, ActivityIndicator, FlatList, TouchableOpacity} from 'react-native'
 const { dialog } = require('electron').remote
 const con = require('electron').remote.getGlobal('console')
-const { extract } = require('article-parser');
+// const { extract } = require('article-parser');
 var h2p = require('html2plaintext');
 var removeDiacritics = require('diacritics').remove;
 const fetch = require('node-fetch');
@@ -36,6 +36,7 @@ function Corpusier() {
   const [showStart, setShowStart] = useState(true)
   const [previousCorpus, setPreviousCorpus] = useState([])
   const [updatingRules, setUpdatingRules] = useState(false)
+  const [testCorpus, setTestCorpus] = useState([])
   // {type: nb, text1: "", text2: ""} nb → 1: delete all occurence of text1,  2: delete from beginning to text 1, 
   // 3: delete from text1 to end, 4: delete from text1 to text2
 
@@ -63,6 +64,7 @@ function Corpusier() {
   }
 
   const updateTab = (t) => {
+    con.log("First selection in updateTab : ", firstSelection)
     setTab(t)
   }
 
@@ -160,8 +162,12 @@ function Corpusier() {
       const response = await fetch("http://51.210.110.73/api/tests/extract/url=" + encodeURIComponent(url))
       const data = await response.json();
       let calculatedDate = extractDate(data, {locale: 'fr'});
-      if (calculatedDate.length > 0) {
+      if (calculatedDate.length > 0 && calculatedDate[0] != '') {
         date = calculatedDate[0].date
+      } else {
+        let extractedDate = data.match(/\d/g);
+        date = extractedDate.slice(0, 8).join('')
+        return date
       }
     } else {
       date = article.published
@@ -191,12 +197,16 @@ function Corpusier() {
     let tempCorpus = ""
     let tempCorpus2 = []
     let counter = 0
-    let tempSelection = ""
+    // let tempSelection = ""
     for (const url of data) {
       counter ++
       setProgress(counter)
       try {
-        let article = await extract(url);
+        let response = await fetch("https://us-central1-technews-251304.cloudfunctions.net/article-parser?url="
+        + url)
+        let responseJson = await response.json()
+        let article = responseJson.data
+        con.log("Article : ", article.title)
         setCurrentTitle(article.title)
 
         // Handle header
@@ -230,6 +240,7 @@ function Corpusier() {
           full: header + article.title + " \r\n\n" + content
         }
         tempCorpus2.push(newItem)
+        setTestCorpus(testCorpus => [...testCorpus, newItem])
       } catch {}
     }
 
@@ -360,7 +371,7 @@ function Corpusier() {
           <View>
             <View style={{height: 1, backgroundColor: '#5F5F5F', marginBottom: 20}}/>
             {showStart && <Ender process={processCorpus}/>}
-            {loading && <View style={{justifyContent: 'center', height: 70, alignItems: 'center'}}>
+            {loading && <View style={{justifyContent: 'center', height: 100, alignItems: 'center'}}>
               <ActivityIndicator size='large' color='#15B0AF'/>
               <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 15}}>
                 <Text style={{color: 'gray', marginLeft: 10}}>Loading {progress} / {total} :</Text>
@@ -373,29 +384,40 @@ function Corpusier() {
               </Text>
             }
           </View>}
+          {/* <FlatList
+            style={{height: 600}}
+            data={corpus2}
+            extraData={corpus2}
+            renderItem={renderItem}
+            keyExtractor={item => item.title}
+          /> */}
         </ScrollView>
       </View>}
       {firstSelection == '' && <ContextMenuArea menuItems={menuItems}>
-        {tab == 2 && <View style={{width: '110%', marginLeft: '-5%'}}>
+        <View style={{width: '110%', marginLeft: '-5%', height: tab == 2 ? 670 : 0}}>
           <FlatList
-            style={{height: 705}}
+            style={{height: 600}}
             data={corpus2}
+            // data={testCorpus.length > 0 ? testCorpus : corpus2}
+            // extraData={testCorpus}
             renderItem={renderItem}
             keyExtractor={item => item.title}
           />
+          {tab == 2 &&
           <TouchableOpacity 
             style={{backgroundColor: '#1E1E1E', marginTop: 15, height: 50, width: 250, borderRadius: 5, 
                     alignItems: 'center', justifyContent: 'center', alignSelf: 'center'}} 
             onPress={() => saveFile()}>
             <Text style={{color: 'white', textAlign: 'center'}}>Sauvegarder le corpus</Text>
-          </TouchableOpacity>
+          </TouchableOpacity>}
           <Text style={{color: 'white'}}>{firstSelection}</Text>
-        </View>}
+        </View>
       </ContextMenuArea>}
-      {firstSelection != '' && <ContextMenuArea menuItems={menuItems2}>
+      {firstSelection != '' && 
+      <ContextMenuArea menuItems={menuItems2}>
         {tab == 2 && <View style={{width: '110%', marginLeft: '-5%'}}>
           <FlatList
-            style={{height: 705}}
+            style={{height: 600}}
             data={corpus2}
             renderItem={renderItem}
             keyExtractor={item => item.title}

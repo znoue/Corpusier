@@ -5,9 +5,7 @@ const con = require('electron').remote.getGlobal('console')
 
 function Ender({process}) {
 
-  // Équivalent à componentDidMount plus componentDidUpdate :
   useEffect(() => {
-    // Mettre à jour le titre du document en utilisant l'API du navigateur
   });
 
   return (

@@ -4,7 +4,6 @@ const { dialog } = require('electron').remote
 const con = require('electron').remote.getGlobal('console')
 var fs = require('fs')
 var path = require('path')
-const extractUrls = require("extract-urls");
 
 const FilePicker = ({getFile, getData, gFile}) => {
   const [file, setFile] = useState(gFile);
