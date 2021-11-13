@@ -13,17 +13,17 @@ https://user-images.githubusercontent.com/26922072/119340771-417f2c80-bc93-11eb-
 
 Version actuelle :
 
-* Windows : https://github.com/znoue/Corpusier/releases/download/v1.0/Corpusier_0.0.1_windows.zip
-* MacOS: https://github.com/znoue/Corpusier/releases/download/v1.0/Corpusier_0.0.1_app_macos.zip
+* Windows : https://github.com/znoue/Corpusier/releases/download/v1.1/Corpusier_1.1_windows.zip
+* MacOS: https://github.com/znoue/Corpusier/releases/download/v1.1/Corpusier.app.zip
 * Linux :
 
-  - Deb : https://github.com/znoue/Corpusier/releases/download/v1.0/Corpusier_0.0.1_amd64.deb 
+  - Deb : https://github.com/znoue/Corpusier/releases/download/v1.1/Corpusier_1.1_amd64.deb 
 
-  - RPM : https://github.com/znoue/Corpusier/releases/download/v1.0/Corpusier-0.0.1.x86_64.rpm
+  - RPM : https://github.com/znoue/Corpusier/releases/download/v1.1/Corpusier_1.1.x86_64.rpm
 
-  - AppImage : https://github.com/znoue/Corpusier/releases/download/v1.0/Corpusier-0.0.1.AppImage
+  - AppImage : https://github.com/znoue/Corpusier/releases/download/v1.1/Corpusier_1.1.AppImage
 
-  - Snap : https://github.com/znoue/Corpusier/releases/download/v1.0/Corpusier_0.0.1_amd64.snap
+  - Snap : https://github.com/znoue/Corpusier/releases/download/v1.1/Corpusier_1.1_amd64.snap
 
 
 
